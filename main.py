@@ -1,3 +1,4 @@
+#activate virtual environment
 #source venv/bin/activate
 
 # this allows us to use code from
