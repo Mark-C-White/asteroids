@@ -1,3 +1,5 @@
+#source venv/bin/activate
+
 # this allows us to use code from
 # the open-source pygame library
 # throughout this file
@@ -6,6 +8,7 @@ from constants import *
 from player import Player
 from asteroidfield import AsteroidField
 from asteroid import Asteroid
+from shot import Shot
 
 def main():
     pygame.init()
@@ -24,12 +27,23 @@ def main():
     AsteroidField.containers = (updateable)
     asteroidfield = AsteroidField()
 
+    shots = pygame.sprite.Group()
+    Shot.containers = (shots, updateable, drawable)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
         screen.fill("black")
         updateable.update(dt)
+        for a in asteroids:
+            if a.collide(player):
+                print("Game over!")
+                exit()
+            for s in shots:
+                if a.collide(s):
+                    s.kill()
+                    a.split()
         for i in drawable:
             i.draw(screen)
         pygame.display.flip()
